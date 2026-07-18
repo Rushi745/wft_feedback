@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Field Technologies — System Feedback Form</title>
+    <meta name="description" content="Installed Rainwater Harvesting System Feedback Form for Water Field Technologies. Share your experience with our system and service.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Animated Water Background -->
+    <div class="water-bg">
+        <div class="wave wave-1"></div>
+        <div class="wave wave-2"></div>
+        <div class="wave wave-3"></div>
+        <div class="bubble bubble-1"></div>
+        <div class="bubble bubble-2"></div>
+        <div class="bubble bubble-3"></div>
+        <div class="bubble bubble-4"></div>
+        <div class="bubble bubble-5"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="app-container">
+
+        <!-- Header -->
+        <header class="app-header" id="app-header">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 4C24 4 8 20 8 30C8 38.837 15.163 44 24 44C32.837 44 40 38.837 40 30C40 20 24 4 24 4Z" fill="url(#dropGrad)" stroke="#fff" stroke-width="1.5"/>
+                        <path d="M20 28C20 28 16 22 16 26C16 28.209 17.791 30 20 30C22.209 30 24 28.209 24 26C24 22 20 28 20 28Z" fill="rgba(255,255,255,0.5)"/>
+                        <defs>
+                            <linearGradient id="dropGrad" x1="24" y1="4" x2="24" y2="44">
+                                <stop stop-color="#60B8F0"/>
+                                <stop offset="1" stop-color="#1A6FB5"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <h1>Water Field Technologies</h1>
+                    <p>Installed Rainwater Harvesting System — Feedback Form</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Progress Bar -->
+        <div class="progress-container" id="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-steps" id="progress-steps">
+                <div class="progress-step active" data-step="1"><span class="step-dot"></span><span class="step-label">Details</span></div>
+                <div class="progress-step" data-step="2"><span class="step-dot"></span><span class="step-label">Usage</span></div>
+                <div class="progress-step" data-step="3"><span class="step-dot"></span><span class="step-label">Install</span></div>
+                <div class="progress-step" data-step="4"><span class="step-dot"></span><span class="step-label">Reliability</span></div>
+                <div class="progress-step" data-step="5"><span class="step-dot"></span><span class="step-label">Safety</span></div>
+                <div class="progress-step" data-step="6"><span class="step-dot"></span><span class="step-label">Satisfaction</span></div>
+                <div class="progress-step" data-step="7"><span class="step-dot"></span><span class="step-label">Feedback</span></div>
+                <div class="progress-step" data-step="8"><span class="step-dot"></span><span class="step-label">Follow-up</span></div>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <form id="feedback-form" novalidate>
+
+            <!-- ===== STEP 1: Customer & Site Details ===== -->
+            <section class="form-step active" data-step="1">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <div>
+                        <h2>Customer & Site Details</h2>
+                        <p class="step-subtitle">Tell us about yourself and your installation site.</p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="installation-id">Installation ID / Job Number</label>
+                        <input type="text" id="installation-id" name="installation_id" placeholder="e.g., WFT-2025-0042">
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-name">Customer Name / Organization <span class="required">*</span></label>
+                        <input type="text" id="customer-name" name="customer_name" placeholder="Your name or organization" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-person">Contact Person</label>
+                        <input type="text" id="contact-person" name="contact_person" placeholder="Primary contact name">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone <span class="required">*</span></label>
+                        <input type="tel" id="phone" name="phone" placeholder="+91 XXXXX XXXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="your@email.com">
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="site-address">Site Address <span class="required">*</span></label>
+                        <textarea id="site-address" name="site_address" rows="2" placeholder="Full address of the installation site" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="installation-date">Month / Year of Installation</label>
+                        <input type="month" id="installation-date" name="installation_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="feedback-date">Date of This Feedback</label>
+                        <input type="date" id="feedback-date" name="feedback_date">
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== STEP 2: System Usage & Performance ===== -->
+            <section class="form-step" data-step="2">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <div>
+                        <h2>System Usage & Performance</h2>
+                        <p class="step-subtitle">How is the rainwater harvesting system working for you?</p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>How often is the system used? <span class="required">*</span></label>
+                        <div class="radio-group" id="system-usage-frequency">
+                            <label class="radio-card"><input type="radio" name="usage_frequency" value="Daily" required><span class="radio-label">Daily</span></label>
+                            <label class="radio-card"><input type="radio" name="usage_frequency" value="Weekly"><span class="radio-label">Weekly</span></label>
+                            <label class="radio-card"><input type="radio" name="usage_frequency" value="Monthly"><span class="radio-label">Monthly</span></label>
+                            <label class="radio-card"><input type="radio" name="usage_frequency" value="Rarely"><span class="radio-label">Rarely</span></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Does the system meet the intended purpose? <span class="required">*</span></label>
+                        <div class="radio-group" id="meets-purpose">
+                            <label class="radio-card"><input type="radio" name="meets_purpose" value="Yes" required><span class="radio-label">Yes</span></label>
+                            <label class="radio-card"><input type="radio" name="meets_purpose" value="Partially"><span class="radio-label">Partially</span></label>
+                            <label class="radio-card"><input type="radio" name="meets_purpose" value="No"><span class="radio-label">No</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group full-width conditional-field" id="meets-purpose-explain-group" style="display:none;">
+                        <label for="meets-purpose-explain">Please explain:</label>
+                        <textarea id="meets-purpose-explain" name="meets_purpose_explain" rows="2" placeholder="Tell us what's not working as expected..."></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Overall system performance since installation <span class="required">*</span></label>
+                        <div class="radio-group" id="overall-performance">
+                            <label class="radio-card"><input type="radio" name="overall_performance" value="Excellent" required><span class="radio-label">Excellent</span></label>
+                            <label class="radio-card"><input type="radio" name="overall_performance" value="Good"><span class="radio-label">Good</span></label>
+                            <label class="radio-card"><input type="radio" name="overall_performance" value="Fair"><span class="radio-label">Fair</span></label>
+                            <label class="radio-card"><input type="radio" name="overall_performance" value="Poor"><span class="radio-label">Poor</span></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Have you experienced any unplanned downtime?</label>
+                        <div class="radio-group" id="downtime">
+                            <label class="radio-card"><input type="radio" name="unplanned_downtime" value="Yes"><span class="radio-label">Yes</span></label>
+                            <label class="radio-card"><input type="radio" name="unplanned_downtime" value="No"><span class="radio-label">No</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group full-width conditional-field" id="downtime-explain-group" style="display:none;">
+                        <label for="downtime-explain">How many times and for how long?</label>
+                        <textarea id="downtime-explain" name="downtime_explain" rows="2" placeholder="e.g., 3 times, each lasting about 2 days..."></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Are output/performance levels as expected?</label>
+                        <div class="radio-group" id="output-levels">
+                            <label class="radio-card"><input type="radio" name="output_expected" value="Yes"><span class="radio-label">Yes</span></label>
+                            <label class="radio-card"><input type="radio" name="output_expected" value="No"><span class="radio-label">No</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group full-width conditional-field" id="output-explain-group" style="display:none;">
+                        <label for="output-explain">Please describe the discrepancy (flow, pressure, quality, capacity):</label>
+                        <textarea id="output-explain" name="output_explain" rows="2" placeholder="Describe the issues you've noticed..."></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== STEP 3: Installation & Handover ===== -->
+            <section class="form-step" data-step="3">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <div>
+                        <h2>Installation & Handover</h2>
+                        <p class="step-subtitle">Rate the installation process and handover experience.</p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Was the installation completed on schedule?</label>
+                        <div class="radio-group" id="on-schedule">
+                            <label class="radio-card"><input type="radio" name="on_schedule" value="Yes"><span class="radio-label">Yes</span></label>
+                            <label class="radio-card"><input type="radio" name="on_schedule" value="No"><span class="radio-label">No</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group full-width conditional-field" id="schedule-explain-group" style="display:none;">
+                        <label for="schedule-explain">Please explain the delay:</label>
+                        <textarea id="schedule-explain" name="schedule_explain" rows="2" placeholder="What caused the delay?"></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Quality of workmanship during installation</label>
+                        <div class="radio-group" id="workmanship">
+                            <label class="radio-card"><input type="radio" name="workmanship" value="Excellent"><span class="radio-label">Excellent</span></label>
+                            <label class="radio-card"><input type="radio" name="workmanship" value="Good"><span class="radio-label">Good</span></label>
+                            <label class="radio-card"><input type="radio" name="workmanship" value="Fair"><span class="radio-label">Fair</span></label>
+                            <label class="radio-card"><input type="radio" name="workmanship" value="Poor"><span class="radio-label">Poor</span></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Was the system handed over with complete documentation?</label>
+                        <div class="radio-group" id="documentation">
+                            <label class="radio-card"><input type="radio" name="documentation_complete" value="Yes"><span class="radio-label">Yes</span></label>
+                            <label class="radio-card"><input type="radio" name="documentation_complete" value="Partially"><span class="radio-label">Partially</span></label>
+                            <label class="radio-card"><input type="radio" name="documentation_complete" value="No"><span class="radio-label">No</span></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Was operational training provided to users/operators?</label>
+                        <div class="radio-group" id="training-provided">
+                            <label class="radio-card"><input type="radio" name="training_provided" value="Yes"><span class="radio-label">Yes</span></label>
+                            <label class="radio-card"><input type="radio" name="training_provided" value="No"><span class="radio-label">No</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group full-width conditional-field" id="training-adequate-group" style="display:none;">
+                        <label>Was the training adequate?</label>
+                        <div class="radio-group" id="training-adequate">
+                            <label class="radio-card"><input type="radio" name="training_adequate" value="Yes"><span class="radio-label">Yes</span></label>
+                            <label class="radio-card"><input type="radio" name="training_adequate" value="No"><span class="radio-label">No</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group full-width conditional-field" id="training-comments-group" style="display:none;">
+                        <label for="training-comments">Training comments:</label>
+                        <textarea id="training-comments" name="training_comments" rows="2" placeholder="Any comments about the training provided..."></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== STEP 4: Reliability & Maintenance ===== -->
+            <section class="form-step" data-step="4">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <div>
+                        <h2>Reliability & Maintenance</h2>
+                        <p class="step-subtitle">Tell us about the system's reliability and maintenance experience.</p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>How would you rate system reliability?</label>
+                        <div class="radio-group" id="reliability">
+                            <label class="radio-card"><input type="radio" name="reliability" value="Excellent"><span class="radio-label">Excellent</span></label>
+                            <label class="radio-card"><input type="radio" name="reliability" value="Good"><span class="radio-label">Good</span></label>
+                            <label class="radio-card"><input type="radio" name="reliability" value="Fair"><span class="radio-label">Fair</span></label>
+                            <label class="radio-card"><input type="radio" name="reliability" value="Poor"><span class="radio-label">Poor</span></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Do you require technical support or service visits?</label>
+                        <div class="radio-group" id="support-needed">
+                            <label class="radio-card"><input type="radio" name="support_needed" value="Yes"><span class="radio-label">Yes</span></label>
+                            <label class="radio-card"><input type="radio" name="support_needed" value="No"><span class="radio-label">No</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group full-width conditional-field" id="support-when-group" style="display:none;">
+                        <label for="support-when">When do you need the visit?</label>
+                        <input type="text" id="support-when" name="support_when" placeholder="e.g., Within the next week, ASAP, next month...">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Ease of routine maintenance</label>
+                        <div class="radio-group" id="maintenance-ease">
+                            <label class="radio-card"><input type="radio" name="maintenance_ease" value="Easy"><span class="radio-label">Easy</span></label>
+                            <label class="radio-card"><input type="radio" name="maintenance_ease" value="Manageable"><span class="radio-label">Manageable</span></label>
+                            <label class="radio-card"><input type="radio" name="maintenance_ease" value="Difficult"><span class="radio-label">Difficult</span></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Availability of spare parts and consumables</label>
+                        <div class="radio-group" id="spare-parts">
+                            <label class="radio-card"><input type="radio" name="spare_parts" value="Excellent"><span class="radio-label">Excellent</span></label>
+                            <label class="radio-card"><input type="radio" name="spare_parts" value="Good"><span class="radio-label">Good</span></label>
+                            <label class="radio-card"><input type="radio" name="spare_parts" value="Fair"><span class="radio-label">Fair</span></label>
+                            <label class="radio-card"><input type="radio" name="spare_parts" value="Poor"><span class="radio-label">Poor</span></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="recurring-faults">Any recurring faults or issues?</label>
+                        <textarea id="recurring-faults" name="recurring_faults" rows="3" placeholder="Please list with dates and brief descriptions..."></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== STEP 5: Safety & Compliance ===== -->
+            <section class="form-step" data-step="5">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <div>
+                        <h2>Safety & Compliance</h2>
+                        <p class="step-subtitle">Help us ensure the system meets all safety standards.</p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Does the system meet safety expectations and local regulations?</label>
+                        <div class="radio-group" id="safety-expectations">
+                            <label class="radio-card"><input type="radio" name="safety_met" value="Yes"><span class="radio-label">Yes</span></label>
+                            <label class="radio-card"><input type="radio" name="safety_met" value="Partially"><span class="radio-label">Partially</span></label>
+                            <label class="radio-card"><input type="radio" name="safety_met" value="No"><span class="radio-label">No</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group full-width conditional-field" id="safety-comments-group" style="display:none;">
+                        <label for="safety-comments">Comments on safety compliance:</label>
+                        <textarea id="safety-comments" name="safety_comments" rows="2" placeholder="Please provide details..."></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Any safety incidents related to the system?</label>
+                        <div class="radio-group" id="safety-incidents">
+                            <label class="radio-card"><input type="radio" name="safety_incidents" value="Yes"><span class="radio-label">Yes</span></label>
+                            <label class="radio-card"><input type="radio" name="safety_incidents" value="No"><span class="radio-label">No</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group full-width conditional-field" id="incidents-explain-group" style="display:none;">
+                        <label for="incidents-explain">Please provide details of the incident(s):</label>
+                        <textarea id="incidents-explain" name="incidents_explain" rows="3" placeholder="Describe what happened, when, and any actions taken..."></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== STEP 6: Customer Satisfaction ===== -->
+            <section class="form-step" data-step="6">
+                <div class="step-header">
+                    <div class="step-number">6</div>
+                    <div>
+                        <h2>Customer Satisfaction</h2>
+                        <p class="step-subtitle">We value your honest opinion about our work.</p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Overall satisfaction with Water Field Technologies <span class="required">*</span></label>
+                        <div class="radio-group satisfaction-group" id="overall-satisfaction">
+                            <label class="radio-card"><input type="radio" name="overall_satisfaction" value="Very Satisfied" required><span class="radio-label">Very Satisfied</span></label>
+                            <label class="radio-card"><input type="radio" name="overall_satisfaction" value="Satisfied"><span class="radio-label">Satisfied</span></label>
+                            <label class="radio-card"><input type="radio" name="overall_satisfaction" value="Neutral"><span class="radio-label">Neutral</span></label>
+                            <label class="radio-card"><input type="radio" name="overall_satisfaction" value="Dissatisfied"><span class="radio-label">Dissatisfied</span></label>
+                            <label class="radio-card"><input type="radio" name="overall_satisfaction" value="Very Dissatisfied"><span class="radio-label">Very Dissatisfied</span></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Likelihood to recommend our company to others <span class="required">*</span></label>
+                        <p class="field-hint">0 = Definitely not &nbsp;&nbsp;•&nbsp;&nbsp; 10 = Absolutely!</p>
+                        <div class="nps-scale" id="nps-scale">
+                            <button type="button" class="nps-btn detractor" data-value="0">0</button>
+                            <button type="button" class="nps-btn detractor" data-value="1">1</button>
+                            <button type="button" class="nps-btn detractor" data-value="2">2</button>
+                            <button type="button" class="nps-btn detractor" data-value="3">3</button>
+                            <button type="button" class="nps-btn detractor" data-value="4">4</button>
+                            <button type="button" class="nps-btn detractor" data-value="5">5</button>
+                            <button type="button" class="nps-btn detractor" data-value="6">6</button>
+                            <button type="button" class="nps-btn passive" data-value="7">7</button>
+                            <button type="button" class="nps-btn passive" data-value="8">8</button>
+                            <button type="button" class="nps-btn promoter" data-value="9">9</button>
+                            <button type="button" class="nps-btn promoter" data-value="10">10</button>
+                        </div>
+                        <input type="hidden" id="nps-value" name="nps_score" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="liked-most">What did you like most about the system or our service?</label>
+                        <textarea id="liked-most" name="liked_most" rows="3" placeholder="Tell us what impressed you the most..."></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="improve">What could we improve?</label>
+                        <textarea id="improve" name="could_improve" rows="3" placeholder="Your suggestions help us grow..."></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== STEP 7: Open Feedback & Photos ===== -->
+            <section class="form-step" data-step="7">
+                <div class="step-header">
+                    <div class="step-number">7</div>
+                    <div>
+                        <h2>Open Feedback & Documentation</h2>
+                        <p class="step-subtitle">Any additional thoughts, and optionally attach relevant photos.</p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="additional-comments">Additional comments, suggestions, or observations</label>
+                        <textarea id="additional-comments" name="additional_comments" rows="4" placeholder="Share anything else on your mind..."></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Photos of the installed system</label>
+                        <p class="field-hint">Upload photos showing the system, any problem areas, serial numbers, or nameplates.</p>
+                        <div class="file-upload-area" id="photo-upload-area">
+                            <div class="file-upload-icon">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                                    <polyline points="21 15 16 10 5 21"/>
+                                </svg>
+                            </div>
+                            <p>Drag & drop photos here, or <span class="upload-link">click to browse</span></p>
+                            <p class="file-hint">PNG, JPG or PDF up to 10MB each</p>
+                            <input type="file" id="photo-input" name="photos" multiple accept="image/*,.pdf" class="file-input-hidden">
+                        </div>
+                        <div class="file-preview" id="file-preview"></div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Logs, test results, or service reports</label>
+                        <p class="field-hint">Attach any relevant documents for our review.</p>
+                        <div class="file-upload-area" id="docs-upload-area">
+                            <div class="file-upload-icon">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                    <line x1="16" y1="13" x2="8" y2="13"/>
+                                    <line x1="16" y1="17" x2="8" y2="17"/>
+                                    <polyline points="10 9 9 9 8 9"/>
+                                </svg>
+                            </div>
+                            <p>Drag & drop documents here, or <span class="upload-link">click to browse</span></p>
+                            <p class="file-hint">PDF, DOC, XLS up to 10MB each</p>
+                            <input type="file" id="docs-input" name="documents" multiple accept=".pdf,.doc,.docx,.xls,.xlsx" class="file-input-hidden">
+                        </div>
+                        <div class="file-preview" id="docs-preview"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== STEP 8: Follow-up & Consent ===== -->
+            <section class="form-step" data-step="8">
+                <div class="step-header">
+                    <div class="step-number">8</div>
+                    <div>
+                        <h2>Follow-up & Consent</h2>
+                        <p class="step-subtitle">Let us know how we can stay in touch.</p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Would you like a follow-up inspection or service visit?</label>
+                        <div class="radio-group" id="followup-visit">
+                            <label class="radio-card"><input type="radio" name="followup_visit" value="Yes"><span class="radio-label">Yes, please</span></label>
+                            <label class="radio-card"><input type="radio" name="followup_visit" value="No"><span class="radio-label">No, thanks</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group conditional-field" id="followup-datetime-group" style="display:none;">
+                        <label for="followup-datetime">Preferred date/time for visit:</label>
+                        <input type="text" id="followup-datetime" name="followup_datetime" placeholder="e.g., Next Monday morning">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>May we contact you to discuss this feedback?</label>
+                        <div class="radio-group" id="contact-consent">
+                            <label class="radio-card"><input type="radio" name="contact_consent" value="Yes"><span class="radio-label">Yes</span></label>
+                            <label class="radio-card"><input type="radio" name="contact_consent" value="No"><span class="radio-label">No</span></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Preferred contact method</label>
+                        <div class="radio-group" id="contact-method">
+                            <label class="radio-card"><input type="radio" name="contact_method" value="Phone"><span class="radio-label">Phone</span></label>
+                            <label class="radio-card"><input type="radio" name="contact_method" value="Email"><span class="radio-label">Email</span></label>
+                            <label class="radio-card"><input type="radio" name="contact_method" value="WhatsApp"><span class="radio-label">WhatsApp</span></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="submitter-name">Name of person submitting this feedback <span class="required">*</span></label>
+                        <input type="text" id="submitter-name" name="submitter_name" placeholder="Your full name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="submission-date">Date</label>
+                        <input type="date" id="submission-date" name="submission_date">
+                    </div>
+                </div>
+
+                <!-- Submit Area -->
+                <div class="submit-area">
+                    <div class="submit-note">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        Your feedback is confidential and will be used solely to improve our services.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Navigation Buttons -->
+            <div class="form-navigation" id="form-navigation">
+                <button type="button" class="btn btn-secondary" id="btn-prev" style="visibility: hidden;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                    Previous
+                </button>
+                <button type="button" class="btn btn-primary" id="btn-next">
+                    Next
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+                <button type="submit" class="btn btn-submit" id="btn-submit" style="display: none;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    Submit Feedback
+                </button>
+            </div>
+        </form>
+
+        <!-- Success State -->
+        <div class="success-screen" id="success-screen" style="display: none;">
+            <div class="success-animation">
+                <div class="success-circle">
+                    <svg class="success-check" viewBox="0 0 52 52">
+                        <circle class="success-check-circle" cx="26" cy="26" r="25" fill="none"/>
+                        <path class="success-check-path" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                    </svg>
+                </div>
+            </div>
+            <h2>Thank You!</h2>
+            <p>Your feedback has been submitted successfully. The Water Field Technologies team will review your responses and get back to you if needed.</p>
+            <button type="button" class="btn btn-primary" onclick="location.reload()">Submit Another Response</button>
+        </div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>&copy; 2026 Water Field Technologies. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
