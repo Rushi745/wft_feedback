@@ -21,50 +21,38 @@ const npsInput = document.getElementById('nps-value');
 let currentStep = 1;
 const totalSteps = steps.length;
 
+// Global file stores — accessible during submission
+const uploadedFiles = {
+    photos: [],
+    documents: []
+};
+
 // ============================================================
 // 2. NAVIGATION (Next / Previous / Progress)
 // ============================================================
 
-/**
- * Go to a specific step number.
- * This hides the current step, shows the new one, updates progress bar etc.
- */
 function goToStep(stepNum) {
-    // Validate before moving forward
     if (stepNum > currentStep && !validateStep(currentStep)) {
         return;
     }
 
-    // Hide all steps
     steps.forEach(s => s.classList.remove('active'));
 
-    // Show target step
     const targetStep = document.querySelector(`.form-step[data-step="${stepNum}"]`);
     if (targetStep) {
         targetStep.classList.add('active');
     }
 
     currentStep = stepNum;
-
-    // Update progress indicators
     updateProgress();
-
-    // Update navigation buttons
     updateNavButtons();
-
-    // Scroll to top of form smoothly
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/**
- * Update the progress bar fill and the step dots.
- */
 function updateProgress() {
-    // Update fill width
     const fillPercent = (currentStep / totalSteps) * 100;
     progressFill.style.width = fillPercent + '%';
 
-    // Update step dots
     progressSteps.forEach((dot, index) => {
         const stepIndex = index + 1;
         dot.classList.remove('active', 'completed');
@@ -77,14 +65,9 @@ function updateProgress() {
     });
 }
 
-/**
- * Show/hide the Previous, Next, and Submit buttons based on current step.
- */
 function updateNavButtons() {
-    // Previous button: hidden on step 1
     btnPrev.style.visibility = currentStep === 1 ? 'hidden' : 'visible';
 
-    // On the last step, hide "Next" and show "Submit"
     if (currentStep === totalSteps) {
         btnNext.style.display = 'none';
         btnSubmit.style.display = 'inline-flex';
@@ -94,7 +77,6 @@ function updateNavButtons() {
     }
 }
 
-// Button click handlers
 btnNext.addEventListener('click', () => goToStep(currentStep + 1));
 btnPrev.addEventListener('click', () => goToStep(currentStep - 1));
 
@@ -102,21 +84,15 @@ btnPrev.addEventListener('click', () => goToStep(currentStep - 1));
 // 3. VALIDATION
 // ============================================================
 
-/**
- * Validate all required fields in a given step.
- * Returns true if valid, false otherwise.
- */
 function validateStep(stepNum) {
     const step = document.querySelector(`.form-step[data-step="${stepNum}"]`);
     if (!step) return true;
 
     let isValid = true;
 
-    // Clear previous errors
     step.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
     step.querySelectorAll('.error-message').forEach(el => el.remove());
 
-    // Validate text/email/tel inputs and textareas with "required"
     const requiredInputs = step.querySelectorAll('input[required]:not([type="radio"]), textarea[required]');
     requiredInputs.forEach(input => {
         if (!input.value.trim()) {
@@ -128,7 +104,6 @@ function validateStep(stepNum) {
         }
     });
 
-    // Validate required radio groups
     const radioGroups = new Set();
     step.querySelectorAll('input[type="radio"][required]').forEach(radio => {
         radioGroups.add(radio.name);
@@ -148,7 +123,6 @@ function validateStep(stepNum) {
         }
     });
 
-    // Validate NPS score on step 6
     if (stepNum === 6 && npsInput.required && !npsInput.value) {
         isValid = false;
         const npsContainer = npsScale.closest('.form-group');
@@ -167,13 +141,8 @@ function validateStep(stepNum) {
     return isValid;
 }
 
-/**
- * Display an error for a specific input field.
- */
 function showFieldError(input, message) {
     input.classList.add('error');
-
-    // Only add error message if not already present
     const parent = input.closest('.form-group');
     if (parent && !parent.querySelector('.error-message')) {
         const errorEl = document.createElement('div');
@@ -187,7 +156,6 @@ function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-// Clear error on input
 form.addEventListener('input', (e) => {
     const target = e.target;
     if (target.classList.contains('error')) {
@@ -206,14 +174,9 @@ form.addEventListener('change', (e) => {
 });
 
 // ============================================================
-// 4. CONDITIONAL FIELDS (Show/hide based on selections)
+// 4. CONDITIONAL FIELDS
 // ============================================================
 
-/**
- * Map: radio group name → { triggerValues: [...], targetId: "..." }
- * When a radio in the group is selected and its value is in triggerValues,
- * the element with targetId is shown. Otherwise it's hidden.
- */
 const conditionalRules = [
     { radioName: 'meets_purpose', triggers: ['Partially', 'No'], targetId: 'meets-purpose-explain-group' },
     { radioName: 'unplanned_downtime', triggers: ['Yes'], targetId: 'downtime-explain-group' },
@@ -227,7 +190,6 @@ const conditionalRules = [
     { radioName: 'followup_visit', triggers: ['Yes'], targetId: 'followup-datetime-group' },
 ];
 
-// Listen for all radio changes
 form.addEventListener('change', (e) => {
     if (e.target.type !== 'radio') return;
 
@@ -246,7 +208,7 @@ form.addEventListener('change', (e) => {
 });
 
 // ============================================================
-// 5. NPS (Net Promoter Score) SCALE
+// 5. NPS SCALE
 // ============================================================
 
 if (npsScale) {
@@ -254,14 +216,10 @@ if (npsScale) {
 
     npsBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            // Remove active from all
             npsBtns.forEach(b => b.classList.remove('active'));
-            // Set active on clicked
             btn.classList.add('active');
-            // Set hidden input value
             npsInput.value = btn.dataset.value;
 
-            // Clear any error
             const errorMsg = npsScale.closest('.form-group')?.querySelector('.error-message');
             if (errorMsg) errorMsg.remove();
         });
@@ -272,20 +230,15 @@ if (npsScale) {
 // 6. FILE UPLOAD HANDLING
 // ============================================================
 
-function setupFileUpload(areaId, inputId, previewId) {
+function setupFileUpload(areaId, inputId, previewId, fileStoreKey) {
     const area = document.getElementById(areaId);
     const input = document.getElementById(inputId);
     const preview = document.getElementById(previewId);
 
     if (!area || !input || !preview) return;
 
-    // Store selected files
-    let selectedFiles = [];
-
-    // Click to open file dialog
     area.addEventListener('click', () => input.click());
 
-    // Drag events
     area.addEventListener('dragover', (e) => {
         e.preventDefault();
         area.classList.add('drag-over');
@@ -299,7 +252,6 @@ function setupFileUpload(areaId, inputId, previewId) {
         handleFiles(e.dataTransfer.files);
     });
 
-    // Input change
     input.addEventListener('change', (e) => {
         handleFiles(e.target.files);
     });
@@ -310,54 +262,80 @@ function setupFileUpload(areaId, inputId, previewId) {
                 showToast(`"${file.name}" is too large (max 10MB)`, 'error');
                 continue;
             }
-            selectedFiles.push(file);
+            uploadedFiles[fileStoreKey].push(file);
         }
         renderPreview();
     }
 
-    // Expose selected files for submission
-    area._getFiles = () => selectedFiles;
-
     function renderPreview() {
         preview.innerHTML = '';
-        selectedFiles.forEach((file, idx) => {
+        uploadedFiles[fileStoreKey].forEach((file, idx) => {
             const tag = document.createElement('div');
             tag.className = 'file-tag';
             tag.innerHTML = `📎 ${file.name} <button type="button" data-idx="${idx}">&times;</button>`;
             preview.appendChild(tag);
         });
 
-        // Remove button
         preview.querySelectorAll('button').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const idx = parseInt(btn.dataset.idx);
-                selectedFiles.splice(idx, 1);
+                uploadedFiles[fileStoreKey].splice(idx, 1);
                 renderPreview();
             });
         });
     }
 }
 
-setupFileUpload('photo-upload-area', 'photo-input', 'file-preview');
-setupFileUpload('docs-upload-area', 'docs-input', 'docs-preview');
+setupFileUpload('photo-upload-area', 'photo-input', 'file-preview', 'photos');
+setupFileUpload('docs-upload-area', 'docs-input', 'docs-preview', 'documents');
 
 // ============================================================
 // 7. FORM SUBMISSION
 // ============================================================
 
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyvoHaHjGye14Kd7ewQA2NbtQpH-qp8h7bXbeyNuWMoM1EnSnmsDid4Lbbx1SIb8-Wr/exec';
+
+async function uploadFilesToDrive(fileStoreKey, installationId) {
+    const files = uploadedFiles[fileStoreKey];
+    const links = [];
+
+    for (const file of files) {
+        const base64 = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+
+        await fetch(GOOGLE_SHEETS_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                type: 'file_upload',
+                installation_id: installationId,
+                file_name: file.name,
+                file_type: file.type,
+                file_data: base64
+            })
+        });
+
+        links.push(file.name + ' (uploaded to Drive/' + installationId + ')');
+    }
+
+    return links.join(', ');
+}
+
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Validate last step
     if (!validateStep(currentStep)) return;
 
-    // Disable submit button and show spinner
     btnSubmit.disabled = true;
     btnSubmit.innerHTML = '<div class="spinner"></div> Submitting...';
 
     try {
-        // Collect all form data
         const formData = new FormData(form);
         const data = {};
         for (const [key, value] of formData.entries()) {
@@ -365,55 +343,17 @@ form.addEventListener('submit', async (e) => {
             data[key] = value;
         }
 
-        // Add timestamp
         data['submitted_at'] = new Date().toISOString();
-
-        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyvoHaHjGye14Kd7ewQA2NbtQpH-qp8h7bXbeyNuWMoM1EnSnmsDid4Lbbx1SIb8-Wr/exec';
         const installationId = data['installation_id'] || ('WFT-' + Date.now());
 
-        // -------------------------------------------------------
-        // UPLOAD FILES TO GOOGLE DRIVE
-        // -------------------------------------------------------
-        async function uploadFilesToDrive(areaId, fieldName) {
-            const area = document.getElementById(areaId);
-            const files = area && area._getFiles ? area._getFiles() : [];
-            const links = [];
-
-            for (const file of files) {
-                const base64 = await new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = () => resolve(reader.result.split(',')[1]);
-                    reader.onerror = reject;
-                    reader.readAsDataURL(file);
-                });
-
-                await fetch(GOOGLE_SHEETS_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        type: 'file_upload',
-                        installation_id: installationId,
-                        file_name: file.name,
-                        file_type: file.type,
-                        file_data: base64
-                    })
-                });
-
-                // no-cors means we can't read the URL back, so we note the file was uploaded
-                links.push(`[${file.name} uploaded to Drive folder: ${installationId}]`);
-            }
-
-            return links.join('\n');
+        // Upload files to Drive first
+        if (uploadedFiles.photos.length > 0 || uploadedFiles.documents.length > 0) {
+            showToast('Uploading files...', 'success');
         }
+        data['photo_links'] = await uploadFilesToDrive('photos', installationId);
+        data['document_links'] = await uploadFilesToDrive('documents', installationId);
 
-        showToast('Uploading files...', 'success');
-        data['photo_links'] = await uploadFilesToDrive('photo-upload-area', 'photos');
-        data['document_links'] = await uploadFilesToDrive('docs-upload-area', 'documents');
-
-        // -------------------------------------------------------
-        // SEND FORM DATA TO GOOGLE SHEETS
-        // -------------------------------------------------------
+        // Send form data to Google Sheets
         await fetch(GOOGLE_SHEETS_URL, {
             method: 'POST',
             mode: 'no-cors',
@@ -421,7 +361,7 @@ form.addEventListener('submit', async (e) => {
             body: JSON.stringify(data)
         });
 
-        // Show success
+        // Show success screen
         form.style.display = 'none';
         document.getElementById('progress-container').style.display = 'none';
         document.getElementById('form-navigation').style.display = 'none';
@@ -445,7 +385,6 @@ form.addEventListener('submit', async (e) => {
 // ============================================================
 
 function showToast(message, type = 'error') {
-    // Remove existing toasts
     document.querySelectorAll('.toast').forEach(t => t.remove());
 
     const toast = document.createElement('div');
