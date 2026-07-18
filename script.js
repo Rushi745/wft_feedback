@@ -1,13 +1,7 @@
-
 /* ========================================
    Water Field Technologies — Feedback Form
-   JavaScript Logic
    ======================================== */
- 
-// ============================================================
-// 1. STATE & ELEMENTS
-// ============================================================
- 
+
 const form = document.getElementById('feedback-form');
 const steps = document.querySelectorAll('.form-step');
 const progressSteps = document.querySelectorAll('.progress-step');
@@ -18,57 +12,40 @@ const btnSubmit = document.getElementById('btn-submit');
 const successScreen = document.getElementById('success-screen');
 const npsScale = document.getElementById('nps-scale');
 const npsInput = document.getElementById('nps-value');
- 
+
 let currentStep = 1;
 const totalSteps = steps.length;
- 
-// Global file stores — accessible during submission
-const uploadedFiles = {
-    photos: [],
-    documents: []
-};
- 
+
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzBcE8dnS288xLHZAXPbPzPB-uXdc1yLBXa5xcfGEjAXeTTvBd8FXwRNs_UfUD9WaBIeA/exec';
+
 // ============================================================
-// 2. NAVIGATION (Next / Previous / Progress)
+// NAVIGATION
 // ============================================================
- 
+
 function goToStep(stepNum) {
-    if (stepNum > currentStep && !validateStep(currentStep)) {
-        return;
-    }
- 
+    if (stepNum > currentStep && !validateStep(currentStep)) return;
+
     steps.forEach(s => s.classList.remove('active'));
- 
     const targetStep = document.querySelector(`.form-step[data-step="${stepNum}"]`);
-    if (targetStep) {
-        targetStep.classList.add('active');
-    }
- 
+    if (targetStep) targetStep.classList.add('active');
+
     currentStep = stepNum;
     updateProgress();
     updateNavButtons();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
- 
+
 function updateProgress() {
-    const fillPercent = (currentStep / totalSteps) * 100;
-    progressFill.style.width = fillPercent + '%';
- 
+    progressFill.style.width = (currentStep / totalSteps * 100) + '%';
     progressSteps.forEach((dot, index) => {
-        const stepIndex = index + 1;
         dot.classList.remove('active', 'completed');
- 
-        if (stepIndex < currentStep) {
-            dot.classList.add('completed');
-        } else if (stepIndex === currentStep) {
-            dot.classList.add('active');
-        }
+        if (index + 1 < currentStep) dot.classList.add('completed');
+        else if (index + 1 === currentStep) dot.classList.add('active');
     });
 }
- 
+
 function updateNavButtons() {
     btnPrev.style.visibility = currentStep === 1 ? 'hidden' : 'visible';
- 
     if (currentStep === totalSteps) {
         btnNext.style.display = 'none';
         btnSubmit.style.display = 'inline-flex';
@@ -77,107 +54,94 @@ function updateNavButtons() {
         btnSubmit.style.display = 'none';
     }
 }
- 
+
 btnNext.addEventListener('click', () => goToStep(currentStep + 1));
 btnPrev.addEventListener('click', () => goToStep(currentStep - 1));
- 
+
 // ============================================================
-// 3. VALIDATION
+// VALIDATION
 // ============================================================
- 
+
 function validateStep(stepNum) {
     const step = document.querySelector(`.form-step[data-step="${stepNum}"]`);
     if (!step) return true;
- 
+
     let isValid = true;
- 
     step.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
     step.querySelectorAll('.error-message').forEach(el => el.remove());
- 
-    const requiredInputs = step.querySelectorAll('input[required]:not([type="radio"]), textarea[required]');
-    requiredInputs.forEach(input => {
+
+    step.querySelectorAll('input[required]:not([type="radio"]), textarea[required]').forEach(input => {
         if (!input.value.trim()) {
             isValid = false;
             showFieldError(input, 'This field is required');
-        } else if (input.type === 'email' && input.value.trim() && !isValidEmail(input.value)) {
+        } else if (input.type === 'email' && !isValidEmail(input.value)) {
             isValid = false;
             showFieldError(input, 'Please enter a valid email');
         }
     });
- 
+
     const radioGroups = new Set();
-    step.querySelectorAll('input[type="radio"][required]').forEach(radio => {
-        radioGroups.add(radio.name);
-    });
- 
+    step.querySelectorAll('input[type="radio"][required]').forEach(r => radioGroups.add(r.name));
     radioGroups.forEach(groupName => {
-        const checked = step.querySelector(`input[name="${groupName}"]:checked`);
-        if (!checked) {
+        if (!step.querySelector(`input[name="${groupName}"]:checked`)) {
             isValid = false;
             const container = step.querySelector(`input[name="${groupName}"]`).closest('.form-group');
             if (container && !container.querySelector('.error-message')) {
-                const errorEl = document.createElement('div');
-                errorEl.className = 'error-message';
-                errorEl.innerHTML = '⚠ Please select an option';
-                container.appendChild(errorEl);
+                const el = document.createElement('div');
+                el.className = 'error-message';
+                el.innerHTML = '⚠ Please select an option';
+                container.appendChild(el);
             }
         }
     });
- 
+
     if (stepNum === 6 && npsInput.required && !npsInput.value) {
         isValid = false;
-        const npsContainer = npsScale.closest('.form-group');
-        if (npsContainer && !npsContainer.querySelector('.error-message')) {
-            const errorEl = document.createElement('div');
-            errorEl.className = 'error-message';
-            errorEl.innerHTML = '⚠ Please select a score';
-            npsContainer.appendChild(errorEl);
+        const c = npsScale.closest('.form-group');
+        if (c && !c.querySelector('.error-message')) {
+            const el = document.createElement('div');
+            el.className = 'error-message';
+            el.innerHTML = '⚠ Please select a score';
+            c.appendChild(el);
         }
     }
- 
-    if (!isValid) {
-        showToast('Please fill in all required fields', 'error');
-    }
- 
+
+    if (!isValid) showToast('Please fill in all required fields', 'error');
     return isValid;
 }
- 
+
 function showFieldError(input, message) {
     input.classList.add('error');
     const parent = input.closest('.form-group');
     if (parent && !parent.querySelector('.error-message')) {
-        const errorEl = document.createElement('div');
-        errorEl.className = 'error-message';
-        errorEl.innerHTML = `⚠ ${message}`;
-        parent.appendChild(errorEl);
+        const el = document.createElement('div');
+        el.className = 'error-message';
+        el.innerHTML = `⚠ ${message}`;
+        parent.appendChild(el);
     }
 }
- 
+
 function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
- 
+
 form.addEventListener('input', (e) => {
-    const target = e.target;
-    if (target.classList.contains('error')) {
-        target.classList.remove('error');
-        const errorMsg = target.closest('.form-group')?.querySelector('.error-message');
-        if (errorMsg) errorMsg.remove();
+    if (e.target.classList.contains('error')) {
+        e.target.classList.remove('error');
+        e.target.closest('.form-group')?.querySelector('.error-message')?.remove();
     }
 });
- 
+
 form.addEventListener('change', (e) => {
     if (e.target.type === 'radio') {
-        const container = e.target.closest('.form-group');
-        const errorMsg = container?.querySelector('.error-message');
-        if (errorMsg) errorMsg.remove();
+        e.target.closest('.form-group')?.querySelector('.error-message')?.remove();
     }
 });
- 
+
 // ============================================================
-// 4. CONDITIONAL FIELDS
+// CONDITIONAL FIELDS
 // ============================================================
- 
+
 const conditionalRules = [
     { radioName: 'meets_purpose', triggers: ['Partially', 'No'], targetId: 'meets-purpose-explain-group' },
     { radioName: 'unplanned_downtime', triggers: ['Yes'], targetId: 'downtime-explain-group' },
@@ -190,152 +154,43 @@ const conditionalRules = [
     { radioName: 'safety_incidents', triggers: ['Yes'], targetId: 'incidents-explain-group' },
     { radioName: 'followup_visit', triggers: ['Yes'], targetId: 'followup-datetime-group' },
 ];
- 
+
 form.addEventListener('change', (e) => {
     if (e.target.type !== 'radio') return;
- 
     conditionalRules.forEach(rule => {
         if (e.target.name === rule.radioName) {
-            const targetEl = document.getElementById(rule.targetId);
-            if (!targetEl) return;
- 
-            if (rule.triggers.includes(e.target.value)) {
-                targetEl.style.display = '';
-            } else {
-                targetEl.style.display = 'none';
-            }
+            const el = document.getElementById(rule.targetId);
+            if (el) el.style.display = rule.triggers.includes(e.target.value) ? '' : 'none';
         }
     });
 });
- 
+
 // ============================================================
-// 5. NPS SCALE
+// NPS SCALE
 // ============================================================
- 
+
 if (npsScale) {
-    const npsBtns = npsScale.querySelectorAll('.nps-btn');
- 
-    npsBtns.forEach(btn => {
+    npsScale.querySelectorAll('.nps-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            npsBtns.forEach(b => b.classList.remove('active'));
+            npsScale.querySelectorAll('.nps-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             npsInput.value = btn.dataset.value;
- 
-            const errorMsg = npsScale.closest('.form-group')?.querySelector('.error-message');
-            if (errorMsg) errorMsg.remove();
+            npsScale.closest('.form-group')?.querySelector('.error-message')?.remove();
         });
     });
 }
- 
+
 // ============================================================
-// 6. FILE UPLOAD HANDLING
+// FORM SUBMISSION
 // ============================================================
- 
-function setupFileUpload(areaId, inputId, previewId, fileStoreKey) {
-    const area = document.getElementById(areaId);
-    const input = document.getElementById(inputId);
-    const preview = document.getElementById(previewId);
- 
-    if (!area || !input || !preview) return;
- 
-    area.addEventListener('click', () => input.click());
- 
-    area.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        area.classList.add('drag-over');
-    });
-    area.addEventListener('dragleave', () => {
-        area.classList.remove('drag-over');
-    });
-    area.addEventListener('drop', (e) => {
-        e.preventDefault();
-        area.classList.remove('drag-over');
-        handleFiles(e.dataTransfer.files);
-    });
- 
-    input.addEventListener('change', (e) => {
-        handleFiles(e.target.files);
-    });
- 
-    function handleFiles(fileList) {
-        for (const file of fileList) {
-            if (file.size > 10 * 1024 * 1024) {
-                showToast(`"${file.name}" is too large (max 10MB)`, 'error');
-                continue;
-            }
-            uploadedFiles[fileStoreKey].push(file);
-        }
-        renderPreview();
-    }
- 
-    function renderPreview() {
-        preview.innerHTML = '';
-        uploadedFiles[fileStoreKey].forEach((file, idx) => {
-            const tag = document.createElement('div');
-            tag.className = 'file-tag';
-            tag.innerHTML = `📎 ${file.name} <button type="button" data-idx="${idx}">&times;</button>`;
-            preview.appendChild(tag);
-        });
- 
-        preview.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const idx = parseInt(btn.dataset.idx);
-                uploadedFiles[fileStoreKey].splice(idx, 1);
-                renderPreview();
-            });
-        });
-    }
-}
- 
-setupFileUpload('photo-upload-area', 'photo-input', 'file-preview', 'photos');
-setupFileUpload('docs-upload-area', 'docs-input', 'docs-preview', 'documents');
- 
-// ============================================================
-// 7. FORM SUBMISSION
-// ============================================================
- 
-const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwEXJKmjkXxt4WuB9v67-iwWLh1dqfaa680FwMCPbNtwqMuUAFBsTXm-_UpjqbSTwQpVw/exec';
- 
-async function uploadFilesToDrive(fileStoreKey, installationId) {
-    const files = uploadedFiles[fileStoreKey];
-    const links = [];
- 
-    for (const file of files) {
-        const base64 = await new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result.split(',')[1]);
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-        });
- 
-        await fetch(GOOGLE_SHEETS_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                type: 'file_upload',
-                installation_id: installationId,
-                file_name: file.name,
-                file_type: file.type,
-                file_data: base64
-            })
-        });
- 
-        links.push(file.name + ' (uploaded to Drive/' + installationId + ')');
-    }
- 
-    return links.join(', ');
-}
- 
+
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
- 
     if (!validateStep(currentStep)) return;
- 
+
     btnSubmit.disabled = true;
     btnSubmit.innerHTML = '<div class="spinner"></div> Submitting...';
- 
+
     try {
         const formData = new FormData(form);
         const data = {};
@@ -343,56 +198,39 @@ form.addEventListener('submit', async (e) => {
             if (key === 'photos' || key === 'documents') continue;
             data[key] = value;
         }
- 
         data['submitted_at'] = new Date().toISOString();
-        const installationId = data['installation_id'] || ('WFT-' + Date.now());
- 
-        // Upload files to Drive first
-        if (uploadedFiles.photos.length > 0 || uploadedFiles.documents.length > 0) {
-            showToast('Uploading files...', 'success');
-        }
-        data['photo_links'] = await uploadFilesToDrive('photos', installationId);
-        data['document_links'] = await uploadFilesToDrive('documents', installationId);
- 
-        // Send form data to Google Sheets
+
         await fetch(GOOGLE_SHEETS_URL, {
             method: 'POST',
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
- 
-        // Show success screen
+
         form.style.display = 'none';
         document.getElementById('progress-container').style.display = 'none';
         document.getElementById('form-navigation').style.display = 'none';
         successScreen.style.display = 'block';
- 
         showToast('Feedback submitted successfully!', 'success');
- 
+
     } catch (error) {
         console.error('Submission error:', error);
         showToast('Something went wrong. Please try again.', 'error');
         btnSubmit.disabled = false;
-        btnSubmit.innerHTML = `
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            Submit Feedback
-        `;
+        btnSubmit.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Submit Feedback`;
     }
 });
- 
+
 // ============================================================
-// 8. TOAST NOTIFICATIONS
+// TOAST
 // ============================================================
- 
+
 function showToast(message, type = 'error') {
     document.querySelectorAll('.toast').forEach(t => t.remove());
- 
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
     toast.textContent = message;
     document.body.appendChild(toast);
- 
     setTimeout(() => {
         toast.style.opacity = '0';
         toast.style.transform = 'translateX(80px)';
@@ -400,16 +238,15 @@ function showToast(message, type = 'error') {
         setTimeout(() => toast.remove(), 300);
     }, 4000);
 }
- 
+
 // ============================================================
-// 9. AUTO-FILL TODAY'S DATE
+// AUTO-FILL DATE
 // ============================================================
- 
-(function setDefaultDates() {
+
+(function() {
     const today = new Date().toISOString().split('T')[0];
-    const feedbackDate = document.getElementById('feedback-date');
-    const submissionDate = document.getElementById('submission-date');
- 
-    if (feedbackDate && !feedbackDate.value) feedbackDate.value = today;
-    if (submissionDate && !submissionDate.value) submissionDate.value = today;
+    const fd = document.getElementById('feedback-date');
+    const sd = document.getElementById('submission-date');
+    if (fd && !fd.value) fd.value = today;
+    if (sd && !sd.value) sd.value = today;
 })();
