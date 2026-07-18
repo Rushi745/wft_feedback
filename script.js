@@ -377,7 +377,7 @@ form.addEventListener('submit', async (e) => {
         // 5. Paste your Web App URL below (replace the placeholder)
         // -------------------------------------------------------
 
-        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyvoHaHjGye14Kd7ewQA2NbtQpH-qp8h7bXbeyNuWMoM1EnSnmsDid4Lbbx1SIb8-Wr/exec';
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwEXJKmjkXxt4WuB9v67-iwWLh1dqfaa680FwMCPbNtwqMuUAFBsTXm-_UpjqbSTwQpVw/exec';
 
         console.log('📋 Form Data Collected:', data);
 
